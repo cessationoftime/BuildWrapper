@@ -957,9 +957,7 @@ preprocessSource contents literate=
                         | (Continue _)<-f = addPPToken "PP" (l,c) (ts2,l2,lineBehavior l f)
                         | (ContinuePragma f2) <-f= addPPToken "P" (l,c) (ts2,"":l2,pragmaBehavior l f2)
                         | ('#':_)<-l =addPPToken "PP" (l,c) (ts2,l2,lineBehavior l f) 
-                        | Just (l',s,e,f2)<-pragmaExtract l f=
-                          (TokenDef "P" (mkFileSpan c s c e) : ts2 ,l':l2,f2)
-                        -- | "{-# " `List.isPrefixOf` l=addPPToken "P" (l,c) (ts2,"":l2,pragmaBehavior l f) 
+                        | Just (l',s,e,f2)<-pragmaExtract l f= (TokenDef "P" (mkFileSpan c s c e) : ts2 ,l':l2,f2)
                         | (Indent n)<-f=(ts2,l:(replicate n (takeWhile (== ' ') l) ++ l2),Start)
                         | otherwise =(ts2,l:l2,Start)
                 ppSLit :: ([TokenDef],[String],PPBehavior) -> (String,Int) -> ([TokenDef],[String],PPBehavior)
